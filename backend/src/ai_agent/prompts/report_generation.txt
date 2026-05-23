@@ -1,0 +1,7 @@
+Generate professional RF security reports with:
+- Executive summary
+- Detection details
+- Threat level and confidence
+- Evidence and affected frequency/location
+- Recommended actions
+- Follow-up questions or missing data

@@ -1,0 +1,7 @@
+RAG answer template:
+1. Direct answer
+2. Evidence from local sources
+3. Operational recommendation
+4. Uncertainty / missing data
+
+Always cite source filenames when context provides them.

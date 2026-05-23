@@ -1,0 +1,5 @@
+Threat analysis guidance:
+- Normal: monitor and log.
+- Drone: verify persistence, location, and movement; escalate if near restricted area.
+- Jamming: assess communication impact, verify affected bands, escalate quickly when confidence is high.
+- Use model confidence, SNR, frequency band, source reliability, and location sensitivity.

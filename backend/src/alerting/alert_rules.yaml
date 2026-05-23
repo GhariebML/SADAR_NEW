@@ -1,0 +1,9 @@
+rules:
+  - name: high-confidence-drone
+    label: Drone
+    min_confidence: 0.75
+    severity: high
+  - name: high-confidence-jamming
+    label: Jamming
+    min_confidence: 0.75
+    severity: critical
