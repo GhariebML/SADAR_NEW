@@ -138,15 +138,25 @@ const Home: React.FC = () => {
             <ResponsiveContainer width="100%" height={280}>
               <PieChart>
                 <Pie data={labelDist} cx="50%" cy="50%" outerRadius={85} innerRadius={50}
-                  dataKey="value" paddingAngle={4} labelLine={false}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
+                  dataKey="value" paddingAngle={4} labelLine={{ stroke: 'var(--border-color)' }}
+                  label={({ cx, cy, midAngle, outerRadius, name, percent }) => {
+                    const RADIAN = Math.PI / 180;
+                    const radius = outerRadius * 1.25;
+                    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                    return (
+                      <text x={x} y={y} fill="var(--text-secondary)" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" fontSize={12} fontWeight={600}>
+                        {`${name} ${(percent * 100).toFixed(0)}%`}
+                      </text>
+                    );
+                  }}>
                   {labelDist.map((e, i) => <Cell key={i} fill={getLabelColor(e.name)} />)}
                 </Pie>
                 <Tooltip 
                   contentStyle={{ background: 'var(--bg-tertiary)', borderColor: 'var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)' }}
                   formatter={(v: any) => [`${v} إشارة`, 'العدد']} 
                 />
-                <Legend iconType="circle" />
+                <Legend iconType="circle" formatter={(value) => <span style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>{value}</span>} />
               </PieChart>
             </ResponsiveContainer>
           ) : <div className="empty-chart">لا توجد بيانات كافية للرسم البياني</div>}
@@ -167,8 +177,8 @@ const Home: React.FC = () => {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" opacity={0.3} />
-                <XAxis dataKey="name" tick={{ fill: 'var(--text-secondary)', fontSize: 11 }} />
-                <YAxis tick={{ fill: 'var(--text-secondary)', fontSize: 11 }} />
+                <XAxis dataKey="name" tick={{ fill: 'var(--text-secondary)', fontSize: 12, fontWeight: 600 }} />
+                <YAxis tick={{ fill: 'var(--text-secondary)', fontSize: 12, fontWeight: 600 }} />
                 <Tooltip 
                   contentStyle={{ background: 'var(--bg-tertiary)', borderColor: 'var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)' }}
                   formatter={(v: any) => [`${v} إشارة`, 'العدد']} 
