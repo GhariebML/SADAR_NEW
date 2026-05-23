@@ -1,4 +1,4 @@
-# SADAR (نظام رصد إشارات الطيف الترددي) 📡
+# SADAR (RF Signal Monitoring System) 📡
 
 [![UI/UX](https://img.shields.io/badge/UI%2FUX-Cyber--Glow-3291ff.svg)](https://reactjs.org/)
 [![Backend](https://img.shields.io/badge/Backend-FastAPI-17c964.svg)](https://fastapi.tiangolo.com/)
@@ -8,8 +8,8 @@ SADAR is a high-fidelity, real-time Radio Frequency (RF) signal monitoring and a
 
 ## 🚀 Key Features
 
-*   **Real-time Telemetry (المراقبة اللحظية):** Ingests and visualizes high-frequency RF pulse data with zero perceivable latency using WebSockets.
-*   **AI Co-Pilot Agent (المساعد الذكي):** Features an integrated, context-aware AI assistant capable of analyzing signal logs, generating tactical reports, and simulating RAG (Retrieval-Augmented Generation) responses even when offline.
+*   **Real-time Telemetry:** Ingests and visualizes high-frequency RF pulse data with zero perceivable latency using WebSockets.
+*   **AI Co-Pilot Agent:** Features an integrated, context-aware AI assistant capable of analyzing signal logs, generating tactical reports, and simulating RAG (Retrieval-Augmented Generation) responses even when offline.
 *   **Cyber-Glow UI/UX:** An immersive dark-mode interface with frosted glassmorphism, dynamic radar sweep animations, and a sophisticated Vercel-inspired color palette.
 *   **Native RTL Support:** Built from the ground up for Arabic language right-to-left layout perfection.
 *   **Resilient Architecture:** The backend features a robust fallback layer that automatically drops down to rule-based simulation if heavy PyTorch dependencies or Ollama LLMs are unavailable, ensuring the UI never crashes.
