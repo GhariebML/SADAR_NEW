@@ -185,13 +185,14 @@ const Realtime: React.FC = () => {
       {/* ── Charts section ── */}
       <div className="charts-grid">
         {/* Real-time pulse flow */}
-        <div className="chart-wrapper card">
+        <div className="chart-wrapper card" style={{ padding: '30px', display: 'flex', flexDirection: 'column' }}>
           <div className="card-header-cyber">
             <h3>نبضات الثقة — آخر 20 إشارة ممسوحة</h3>
             <span className="tech-badge">REAL-TIME TELEMETRY</span>
           </div>
-          <ResponsiveContainer width="100%" height={260}>
-            <LineChart data={confidenceHistory}>
+          <div style={{ flex: 1, minHeight: 260, marginTop: '10px' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={confidenceHistory} margin={{ top: 20, right: 30, left: 10, bottom: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" opacity={0.25} vertical={false} />
               <XAxis
                 dataKey="time"
@@ -218,20 +219,21 @@ const Realtime: React.FC = () => {
                 activeDot={{ r: 6, stroke: '#ffffff', strokeWidth: 1.5 }}
                 name="الثقة"
               />
-            </LineChart>
-          </ResponsiveContainer>
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         {/* Dynamic Spectrum Distribution */}
-        <div className="chart-wrapper card">
+        <div className="chart-wrapper card" style={{ padding: '30px', display: 'flex', flexDirection: 'column' }}>
           <div className="card-header-cyber">
             <h3>توزيع الطيف الترددي</h3>
             <span className="tech-badge">SPECTRUM SPLIT</span>
           </div>
-          <div className="donut-container">
+          <div className="donut-container" style={{ flex: 1, marginTop: '20px' }}>
             <div className="donut-chart-wrap">
-              <ResponsiveContainer width="100%" height={210}>
-                <PieChart>
+              <ResponsiveContainer width="100%" height={230}>
+                <PieChart margin={{ top: 10, bottom: 10 }}>
                   <Pie
                     data={pieData}
                     cx="50%"
@@ -406,7 +408,7 @@ const Realtime: React.FC = () => {
         .telemetry-sub { font-size: 10px; color: var(--text-tertiary); font-weight: 500; }
 
         .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
-        .chart-wrapper { min-height: 350px; }
+        .chart-wrapper { min-height: 400px; }
         .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
         .chart-header h3 { font-size: 15px; font-weight: 800; color: var(--text-primary); }
         .tech-badge {
