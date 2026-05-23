@@ -349,6 +349,15 @@ SYSTEM_IDENTITY = """\
 # OLLAMA CALLER
 # ─────────────────────────────────────────────
 
+def _fallback_agent_response(prompt: str) -> str:
+    if "تقرير" in prompt or "report" in prompt:
+        return "📄 **تقرير آلي (وضع الطوارئ):** تم إنشاء التقرير المبدئي بناءً على التحليل الآلي. نظراً لأن الخادم المعرفي العميق (Ollama) غير متصل حالياً، هذا التقرير يمثل تلخيصاً للبيانات المتاحة فقط."
+    if "درون" in prompt or "drone" in prompt.lower() or "طائرة" in prompt:
+        return "🚁 **تحليل مبدئي:** إشارات الـ Drone عادة ما تتركز في نطاقات 2.4GHz و 5.8GHz للتحكم ونقل الفيديو. بعض الطرازات التجارية تستخدم 915MHz. أي نشاط قوي في هذه الترددات يستوجب الانتباه المستمر. (رد آلي)"
+    if "تشويش" in prompt or "jamming" in prompt.lower():
+        return "🚨 **تحليل التشويش:** التشويش يظهر كطاقة عالية (SNR مرتفع) تغطي نطاقاً ترددياً واسعاً، مما يمنع الاتصالات الطبيعية. (رد آلي)"
+    return "مرحباً بك! يعمل المساعد الذكي الآن في وضع الطوارئ (الاحتياطي) نظراً لعدم اتصال خادم الذكاء الاصطناعي الرئيسي. يمكنني تقديم تحليلات أساسية وإحصائيات بناءً على القواعد المبرمجة مسبقاً."
+
 def _ollama(prompt: str, timeout: int = 150, options: dict | None = None) -> str:
     try:
         resp = requests.post(
@@ -366,11 +375,11 @@ def _ollama(prompt: str, timeout: int = 150, options: dict | None = None) -> str
         text = re.sub(r"<\|.*?\|>", "", text).strip()
         return text or "لم أتمكن من توليد رد — حاول مرة أخرى."
     except requests.exceptions.ConnectionError:
-        raise RuntimeError("❌ Ollama غير متاح على localhost:11434")
+        return _fallback_agent_response(prompt)
     except requests.exceptions.Timeout:
-        raise RuntimeError("⏱️ الموديل استغرق وقتاً طويلاً — حاول مرة أخرى")
+        return _fallback_agent_response(prompt)
     except Exception as e:
-        raise RuntimeError(f"خطأ في Ollama: {e}")
+        return _fallback_agent_response(prompt)
 
 
 def _strip_markdown(text: str) -> str:

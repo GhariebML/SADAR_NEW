@@ -182,7 +182,7 @@ const Agent: React.FC = () => {
               className={`message-bubble-wrapper ${message.role === 'user' ? 'user-side' : 'assistant-side'}`}
             >
               <div className="message-avatar-wrap" style={{
-                background: message.role === 'user' ? 'linear-gradient(135deg, var(--primary-color), #0891b2)' : 'rgba(255, 255, 255, 0.05)',
+                background: message.role === 'user' ? 'linear-gradient(135deg, var(--primary-color), var(--primary-color))' : 'rgba(255, 255, 255, 0.05)',
                 border: `1px solid ${message.role === 'user' ? 'transparent' : 'var(--border-color)'}`,
               }}>
                 {message.role === 'user' ? '👤' : '🤖'}
@@ -342,9 +342,9 @@ const Agent: React.FC = () => {
         }
         
         .user-side .message-card {
-          background: linear-gradient(135deg, var(--primary-color, #06b6d4), #0891b2);
+          background: linear-gradient(135deg, var(--primary-color), var(--primary-color));
           color: #ffffff; border-color: transparent;
-          box-shadow: 0 4px 15px rgba(6, 182, 212, 0.2);
+          box-shadow: 0 4px 15px var(--primary-glow);
         }
 
         .message-bubble-header {
@@ -380,7 +380,7 @@ const Agent: React.FC = () => {
         .sources-chips-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
         
         .source-chip-tag {
-          background: rgba(6, 182, 212, 0.06); padding: 3px 10px; border: 1px solid rgba(6, 182, 212, 0.12);
+          background: var(--primary-glow); padding: 3px 10px; border: 1px solid var(--primary-color);
           border-radius: 12px; font-size: 10px; color: var(--primary-color); font-weight: 600;
         }
         .user-side .source-chip-tag {
@@ -418,12 +418,12 @@ const Agent: React.FC = () => {
         .suggestions-grid { display: flex; flex-wrap: wrap; gap: 8px; }
         .suggested-prompt-chip {
           background: rgba(255,255,255,0.02); border: 1px solid var(--border-color);
-          padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+          padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600;
           color: var(--text-secondary); cursor: pointer; transition: all 0.2s ease;
         }
         .suggested-prompt-chip:hover {
-          background: var(--primary-color, #06b6d4); border-color: transparent; color: #ffffff;
-          transform: translateY(-1px);
+          background: var(--primary-color); border-color: transparent; color: #ffffff;
+          transform: translateY(-2px); box-shadow: 0 4px 12px var(--primary-glow);
         }
 
         .chat-input-panel {
@@ -437,18 +437,18 @@ const Agent: React.FC = () => {
           font-size: 14px; resize: none; font-family: inherit; max-height: 120px;
           outline: none; transition: border-color 0.2s ease;
         }
-        .chat-textarea:focus { border-color: var(--primary-color, #06b6d4); }
+        .chat-textarea:focus { border-color: var(--primary-color); box-shadow: 0 0 0 2px var(--primary-glow); }
         .chat-textarea:disabled { opacity: 0.5; }
 
         .chat-send-btn {
           width: 44px; height: 44px; border-radius: 50%;
-          background: var(--primary-color, #06b6d4); border: none;
+          background: var(--primary-color); border: none;
           font-size: 18px; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
           display: flex; align-items: center; justify-content: center;
           color: #ffffff;
         }
         .chat-send-btn:hover:not(:disabled) {
-          transform: scale(1.06); box-shadow: 0 4px 15px rgba(6, 182, 212, 0.35);
+          transform: scale(1.06); box-shadow: 0 4px 15px var(--primary-glow);
         }
         .chat-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
