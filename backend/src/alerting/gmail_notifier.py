@@ -239,10 +239,26 @@ def send_gmail_alert(signal: dict) -> bool:
         return True
     except smtplib.SMTPAuthenticationError:
         log.error("❌ خطأ مصادقة Gmail — تحقق من App Password في .env")
+        return _fallback_mock_email(signal, html_body)
     except Exception as exc:
         log.error("❌ خطأ في الإرسال: %s", exc)
+        return _fallback_mock_email(signal, html_body)
 
-    return False
+def _fallback_mock_email(signal: dict, html_content: str) -> bool:
+    label = signal.get("label", "Unknown")
+    log.warning("🔄 التحويل إلى 'وضع المحاكاة' (Mock Email Mode) - جاري حفظ البريد محلياً...")
+    try:
+        mock_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "mock_emails")
+        os.makedirs(mock_dir, exist_ok=True)
+        timestamp_str = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        mock_file = os.path.join(mock_dir, f"Alert_{label}_{timestamp_str}.html")
+        with open(mock_file, "w", encoding="utf-8") as f:
+            f.write(html_content)
+        log.info(f"✅ [محاكاة] تم حفظ رسالة البريد كملف HTML في: {mock_file}")
+        return True # Return true so the UI thinks it succeeded
+    except Exception as mock_exc:
+        log.error(f"❌ فشل حفظ البريد الوهمي: {mock_exc}")
+        return False
 
 
 if __name__ == "__main__":

@@ -65,7 +65,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar }) => {
               <span className="logo-icon">📡</span>
             </div>
             <div>
-              <div className="logo-text">SADAR</div>
+              <div className="logo-text" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                SADAR
+                <span style={{ fontSize: '9px', backgroundColor: 'rgba(239, 68, 68, 0.2)', color: '#ef4444', padding: '2px 6px', borderRadius: '4px', letterSpacing: '1px', border: '1px solid rgba(239, 68, 68, 0.5)', display: 'flex', alignItems: 'center', gap: '4px', animation: 'pulse 2s infinite' }}>
+                  <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: '#ef4444' }}></span>
+                  LIVE
+                </span>
+              </div>
               <div className="logo-sub">نظام رصد إشارات RF</div>
             </div>
           </div>
@@ -151,13 +157,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar }) => {
           width: 240px;
           height: 100vh;
           background: var(--sidebar-bg);
-          border-left: 1px solid var(--border-color);
+          border-left: 1px solid var(--primary-color);
           border-right: none;
           display: flex;
           flex-direction: column;
           z-index: 100;
           overflow: hidden;
-          box-shadow: -4px 0 30px rgba(0, 0, 0, 0.05);
+          box-shadow: -4px 0 30px rgba(50, 145, 255, 0.1), inset 4px 0 20px rgba(50, 145, 255, 0.05);
           backdrop-filter: var(--glass-blur);
         }
 

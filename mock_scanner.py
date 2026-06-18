@@ -66,14 +66,14 @@ def get_confidence(sig_type: str) -> float:
 
 print("🚀 SADAR Mock Scanner v7.2")
 print(f"   Endpoint  : {API_URL}")
-print(f"   المحطة    : القاهرة | SDR-1")
-print(f"   الثقة     : توزيع طبيعي 50%→90%")
-print(f"   الإنذار   : Drone/Jamming + conf ≥ {ALERT_THRESHOLD*100:.0f}% فقط")
+print(f"   Station   : Cairo | SDR-1")
+print(f"   Confidence: Gaussian 50%->90%")
+print(f"   Alerts    : Drone/Jamming + conf >= {ALERT_THRESHOLD*100:.0f}% only")
 print(f"   Normal    : {SIGNAL_WEIGHTS['Normal']*100:.0f}% | "
       f"Drone: {SIGNAL_WEIGHTS['Drone']*100:.0f}% | "
       f"Jamming: {SIGNAL_WEIGHTS['Jamming']*100:.0f}%")
 print("─" * 60)
-print("Ctrl+C للإيقاف\n")
+print("Ctrl+C to stop\n")
 
 counter = 0
 
@@ -104,7 +104,7 @@ while True:
     rst = CLR["reset"]
     alert_tag = f" 🚨 ALERT" if is_alert else f" (conf < {ALERT_THRESHOLD*100:.0f}% — no alert)" if sig_type != "Normal" else ""
     print(f"[{counter:04d}] {col}{ICON[sig_type]} {sig_type:8s}{rst} | "
-          f"القاهرة/SDR-1 | {direction:2s} | "
+          f"Cairo/SDR-1 | {direction:2s} | "
           f"{frequency:8.2f} MHz | "
           f"conf={confidence*100:5.1f}%{alert_tag}")
 
@@ -132,7 +132,7 @@ while True:
             print(f"       ⚠️  {r.status_code}: {r.text[:120]}")
 
     except requests.exceptions.ConnectionError:
-        print("       ❌ السيرفر مش شغّال")
+        print("       ❌ Server is offline")
     except Exception as e:
         print(f"       ❌ {e}")
 

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useStore } from './store/useStore';
 import { WebSocketProvider } from './context/WebSocketContext';
-// Components
+import CinematicOverlay from './components/CinematicOverlay';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
 // Pages
@@ -42,6 +42,7 @@ const App: React.FC = () => {
   return (
     <WebSocketProvider>
       <Router>
+        <CinematicOverlay />
         <div className="app-container">
           <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
           {isSidebarOpen && <div className="sidebar-mobile-overlay" onClick={closeSidebar} />}

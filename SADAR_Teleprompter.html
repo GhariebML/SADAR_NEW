@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>SADAR - Script Teleprompter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0b1120; /* Deep blue-gray matching SADAR */
+            color: #e2e8f0;
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.8;
+            font-size: 28px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(11, 17, 32, 0.95);
+            padding: 1rem 0;
+            border-bottom: 2px solid #3b82f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+        .timer {
+            font-size: 36px;
+            font-weight: bold;
+            color: #10b981;
+            font-family: monospace;
+            background: #1e293b;
+            padding: 5px 20px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+        }
+        .timer.warning { color: #f59e0b; border-color: #f59e0b; }
+        .timer.danger { color: #ef4444; border-color: #ef4444; }
+        .scene {
+            margin: 4rem 0;
+            padding: 2.5rem;
+            background: #1e293b;
+            border-radius: 12px;
+            border-right: 8px solid #3b82f6;
+            opacity: 0.5;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .scene.active {
+            opacity: 1;
+            border-right-color: #10b981;
+            background: #1e293b;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.15);
+            transform: scale(1.02);
+        }
+        .scene-title {
+            color: #60a5fa;
+            font-size: 24px;
+            margin-bottom: 1rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .action {
+            display: inline-block;
+            background: #334155;
+            color: #fbbf24;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            font-size: 22px;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+            border: 1px solid #475569;
+        }
+        .script-text {
+            color: #f8fafc;
+            font-weight: 700;
+        }
+        .script-text b {
+            color: #38bdf8;
+        }
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #0f172a;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            font-size: 16px;
+            z-index: 1000;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: bold;
+            font-size: 20px;
+            transition: background 0.2s;
+        }
+        button:hover { background: #2563eb; }
+    </style>
+</head>
+<body>
+
+<div class="header container">
+    <div style="font-weight: 900; color: #3b82f6; font-size: 30px; letter-spacing: 2px;">SADAR TELEPROMPTER</div>
+    <button onclick="startTimer()" id="startBtn">▶ بدء المؤقت</button>
+    <div class="timer" id="timerDisplay">00:00</div>
+</div>
+
+<div class="container" id="scriptContainer">
+    <!-- Scenes injected by JS -->
+</div>
+
+<div class="controls">
+    استخدم الأسهم <b>(⬇ / ⬆)</b> للانتقال للفقرة التالية
+</div>
+
+<script>
+    const scenes = [
+        {
+            title: "0:00 – 0:20 | البداية: خلق المشكلة",
+            action: "💡 ابدأ بشاشة العرض السينمائي المغلقة (شعار SADAR)",
+            text: "تخيل معايا إننا في غرفة عمليات مسؤولة عن حماية منشأة حيوية.<br><br>كل ثانية بتمر، آلاف الإشارات الراديوية بتتحرك حوالينا.<br><br>وسط الضوضاء دي، ممكن تظهر إشارة واحدة فقط تكون لطائرة بدون طيار أو محاولة تشويش… ولو اتأخرنا في اكتشافها، النتيجة ممكن تكون كارثية.<br><br>من هنا بدأت فكرة <b>SADAR</b>."
+        },
+        {
+            title: "0:20 – 0:50 | تقديم الحل",
+            action: "👉 اضغط Enter لتتلاشى الشاشة السينمائية وتظهر الـ Dashboard",
+            text: "SADAR هي منصة ذكية لمراقبة وتحليل الطيف الترددي في الوقت الحقيقي، تعتمد على <b>الذكاء الاصطناعي</b> لاكتشاف الأنشطة غير الطبيعية، وتصنيفها، وتحويل البيانات الخام إلى معلومات تساعد متخذ القرار على الاستجابة بسرعة."
+        },
+        {
+            title: "0:50 – 1:20 | Dashboard – صورة الوضع بالكامل",
+            action: "🖱 أشر ببطء إلى الأرقام والمؤشرات في الرئيسية",
+            text: "أول حاجة يشوفها المشغل هي لوحة التحكم الرئيسية.<br><br>في لحظة واحدة يقدر يعرف عدد الإشارات المستقبلة، والإنذارات النشطة، وتوزيع أنواع التهديدات، وكل ده بيتحدث بشكل لحظي.<br><br>بدل ما يتعامل مع آلاف السطور من البيانات، بيحصل على <b>صورة تشغيلية واضحة</b> خلال ثوانٍ."
+        },
+        {
+            title: "1:20 – 2:00 | لحظة الهجوم – تشغيل Simulation",
+            action: "⚠️ افتح نافذة التيرمنال جانباً",
+            text: "دلوقتي هنحاكي سيناريو حقيقي. بدل الاعتماد على بيانات ثابتة، هنبدأ بث إشارات راديوية كما لو كانت قادمة من البيئة المحيطة.<br><br>كل إشارة بتمر بمراحل متعددة: الاستقبال، والمعالجة، والتحليل، ثم التصنيف باستخدام الذكاء الاصطناعي، وبعدها تظهر مباشرة داخل المنصة.<br><br>زي ما واضح، البيانات بتتحدث لحظيًا بدون أي إعادة تحميل، والنظام يتعامل مع كل إشارة بمجرد وصولها."
+        },
+        {
+            title: "2:00 – 2:40 | اكتشاف التهديد",
+            action: "🔴 اضغط (Enter) في التيرمنال لإطلاق الدرون، ثم (2) للتشويش",
+            text: "وفجأة... يبدأ النظام في رصد نشاط غير معتاد.<br><br>بناءً على خصائص التردد وقوة الإشارة ونمطها، يتم تصنيف بعض الإشارات على أنها مرتبطة بالتحكم في <b>طائرات بدون طيار</b>، بينما يتم التعرف على إشارات أخرى كمحاولات <b>تشويش</b> على الطيف الترددي.<br><br>بدل أن ينتظر المشغل تحليلًا يدويًا، يقوم SADAR باكتشاف التهديد في الوقت المناسب ويعرضه فورًا."
+        },
+        {
+            title: "2:40 – 3:05 | Alerts – تحويل البيانات إلى إنذار",
+            action: "📧 انتقل إلى صفحة Alerts (يمكنك فتح الإيميل الذي وصلك هنا)",
+            text: "بعد الاكتشاف، لا يتوقف النظام عند عرض البيانات فقط، بل ينشئ سجلًا كاملاً للحدث ويرسل تنبيهات فورية.<br><br>كل تنبيه يحتوي على نوع التهديد، ومستوى الخطورة، ودرجة الثقة، والتفاصيل المرتبطة به، مما يسهل المراجعة واتخاذ القرار."
+        },
+        {
+            title: "3:05 – 3:35 | Analytics – فهم الصورة الكبيرة",
+            action: "📊 انتقل إلى صفحة Analytics",
+            text: "ومع تراكم البيانات، تبدأ مرحلة التحليل.<br><br>المنصة لا تكتفي بإظهار ما يحدث الآن، بل تساعد على <b>اكتشاف الأنماط</b>، وأكثر الترددات نشاطًا، واتجاهات التهديد مع مرور الوقت.<br><br>وده بيدي صناع القرار رؤية استراتيجية وليس مجرد متابعة لحظية."
+        },
+        {
+            title: "3:35 – 3:55 | Live Map – أين يحدث التهديد؟",
+            action: "🗺️ انتقل إلى صفحة Live Map",
+            text: "إضافة إلى التحليل، يتم ربط الأحداث بالموقع الجغرافي لإعطاء <b>وعي مكاني أفضل</b>.<br><br>وبالتالي يمكن للمشغل تحديد أماكن النشاط غير الطبيعي بسرعة وتوجيه الاستجابة إلى المنطقة المناسبة."
+        },
+        {
+            title: "3:55 – 4:30 | AI Agent – التفاعل باللغة الطبيعية",
+            action: "🤖 انتقل لصفحة AI Agent واسأله: (كم عدد إشارات الدرون؟)",
+            text: "واحدة من أقوى مميزات المنصة هي المساعد الذكي.<br><br>بدل البحث اليدوي داخل السجلات، يستطيع المشغل ببساطة طرح سؤال باللغة الطبيعية مثل: <i>'كم عدد إشارات الدرون التي تم اكتشافها؟'</i> أو <i>'ما آخر حالة للنظام؟'</i><br><br>فيقوم الذكاء الاصطناعي بتحليل البيانات الحالية وإرجاع إجابة واضحة تساعد في اتخاذ القرار بسرعة."
+        },
+        {
+            title: "4:30 – 4:50 | GitHub – جودة الهندسة البرمجية",
+            action: "💻 افتح صفحة مستودع GitHub أو واجهة API",
+            text: "ولأن أي نظام احترافي يحتاج إلى أساس قوي، تم تصميم SADAR بهندسة برمجية منظمة تفصل بين الواجهة الأمامية والخلفية، ومنطق الذكاء الاصطناعي، وواجهات الـ API، وقاعدة البيانات.<br><br>هذا التنظيم يجعل المشروع قابلًا للتطوير والتوسع ودمج مصادر بيانات حقيقية مستقبلًا."
+        },
+        {
+            title: "4:50 – 5:00 | الخاتمة القوية",
+            action: "🏁 ارجع للـ Dashboard واضغط (Shift + O) لظهور الشاشة السينمائية النهائية",
+            text: "في النهاية، هدف SADAR ليس فقط مراقبة الطيف الترددي، بل <b>تحويل الإشارات الخام إلى قرارات ذكية قابلة للتنفيذ</b>.<br><br>من خلال الدمج بين التحليل اللحظي، والذكاء الاصطناعي، والتنبيهات الفورية، والتصور البصري، نقدم منصة تساعد فرق الأمن والدفاع على اكتشاف التهديدات والاستجابة لها بثقة وسرعة.<br><br><b>شكرًا لكم، ونتطلع إلى أسئلتكم.</b>"
+        }
+    ];
+
+    const container = document.getElementById('scriptContainer');
+    let currentIdx = 0;
+    const sceneEls = [];
+
+    scenes.forEach((scene, idx) => {
+        const div = document.createElement('div');
+        div.className = 'scene' + (idx === 0 ? ' active' : '');
+        div.id = 'scene-' + idx;
+        
+        // Click to activate
+        div.onclick = () => {
+            currentIdx = idx;
+            highlightScene(currentIdx);
+        };
+        
+        const title = document.createElement('div');
+        title.className = 'scene-title';
+        title.innerText = scene.title;
+        
+        const action = document.createElement('div');
+        action.className = 'action';
+        action.innerHTML = scene.action;
+        
+        const text = document.createElement('div');
+        text.className = 'script-text';
+        text.innerHTML = scene.text;
+        
+        div.appendChild(title);
+        div.appendChild(action);
+        div.appendChild(text);
+        
+        container.appendChild(div);
+        sceneEls.push(div);
+    });
+
+    function highlightScene(idx) {
+        sceneEls.forEach((el, i) => {
+            if(i === idx) {
+                el.classList.add('active');
+                // Center the active element on screen
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                el.classList.remove('active');
+            }
+        });
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if(e.key === 'ArrowDown' || e.key === ' ') {
+            currentIdx = Math.min(currentIdx + 1, scenes.length - 1);
+            highlightScene(currentIdx);
+            e.preventDefault();
+        } else if(e.key === 'ArrowUp') {
+            currentIdx = Math.max(currentIdx - 1, 0);
+            highlightScene(currentIdx);
+            e.preventDefault();
+        }
+    });
+
+    let startTime = null;
+    let timerInterval = null;
+    function startTimer() {
+        if(timerInterval) return;
+        document.getElementById('startBtn').style.display = 'none';
+        startTime = Date.now();
+        timerInterval = setInterval(() => {
+            const passed = Math.floor((Date.now() - startTime) / 1000);
+            const m = String(Math.floor(passed / 60)).padStart(2, '0');
+            const s = String(passed % 60).padStart(2, '0');
+            const timerEl = document.getElementById('timerDisplay');
+            timerEl.innerText = `${m}:${s}`;
+            
+            if(passed >= 240) { // 4 mins
+                timerEl.className = 'timer warning';
+            }
+            if(passed >= 285) { // 4 mins 45 secs
+                timerEl.className = 'timer danger';
+            }
+        }, 1000);
+    }
+</script>
+
+</body>
+</html>
