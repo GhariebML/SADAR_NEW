@@ -24,7 +24,10 @@ async def broadcast_alert(data: dict) -> None:
         except Exception:
             disconnected.append(ws)
     for ws in disconnected:
-        _connections.remove(ws)
+        try:
+            _connections.remove(ws)
+        except ValueError:
+            pass
 
 
 @ws_router.websocket("/ws/alerts")
@@ -37,5 +40,8 @@ async def websocket_alerts(websocket: WebSocket):
             # نستنى أي message من الـ client (keep-alive)
             await websocket.receive_text()
     except WebSocketDisconnect:
-        _connections.remove(websocket)
+        try:
+            _connections.remove(websocket)
+        except ValueError:
+            pass
         logger.info(f"❌ WebSocket disconnected — {len(_connections)} clients")

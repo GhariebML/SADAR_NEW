@@ -148,7 +148,7 @@ class LLMHandler:
         disclaimer = "[⚙️ وضع الطوارئ: خادم Ollama غير متصل — تم تشغيل المساعد الذكي المدمج بالقاعدة]\n\n"
 
         # 1. الأسئلة حول الطائرات المسيرة Drone
-        if any(w in q_lower for w in ["drone", "درون", "طائر", "طائرات", "مسي"):
+        if any(w in q_lower for w in ["drone", "درون", "طائر", "طائرات", "مسي"]):
             return (
                 f"{disclaimer}"
                 f"📊 **إحصائيات الطائرات المسيرة (Drone):**\n"

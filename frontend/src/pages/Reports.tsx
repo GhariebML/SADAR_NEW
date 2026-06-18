@@ -40,9 +40,9 @@ const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
     const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
     return parts.map((part, i) => {
       if (part.startsWith('**') && part.endsWith('**'))
-        return <strong key={i} style={{ color: '#00e5ff', fontWeight: 700 }}>{part.slice(2, -2)}</strong>;
+        return <strong key={i} style={{ color: 'var(--primary-color)', fontWeight: 700 }}>{part.slice(2, -2)}</strong>;
       if (part.startsWith('`') && part.endsWith('`'))
-        return <code key={i} style={{ background: 'rgba(0,229,255,0.1)', padding: '1px 5px', borderRadius: 4, fontSize: 11, fontFamily: 'monospace', color: '#00e5ff' }}>{part.slice(1, -1)}</code>;
+        return <code key={i} style={{ background: 'var(--primary-glow)', padding: '1px 5px', borderRadius: 4, fontSize: 11, fontFamily: 'monospace', color: 'var(--primary-color)' }}>{part.slice(1, -1)}</code>;
       return <span key={i}>{part}</span>;
     });
   };
@@ -88,8 +88,8 @@ const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
     // H1
     if (line.startsWith('# ')) {
       result.push(
-        <div key={idx} style={{ margin: '0 0 16px', paddingBottom: 10, borderBottom: '1px solid rgba(0,229,255,0.2)' }}>
-          <h1 style={{ fontSize: 18, fontWeight: 800, color: '#00e5ff', margin: 0, letterSpacing: '-0.02em' }}>
+        <div key={idx} style={{ margin: '0 0 16px', paddingBottom: 10, borderBottom: '1px solid var(--border-color)' }}>
+          <h1 style={{ fontSize: 18, fontWeight: 800, color: 'var(--primary-color)', margin: 0, letterSpacing: '-0.02em' }}>
             {line.slice(2)}
           </h1>
         </div>
@@ -99,8 +99,8 @@ const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
     // H2
     if (line.startsWith('## ')) {
       result.push(
-        <h2 key={idx} style={{ fontSize: 14, fontWeight: 700, color: '#ffffff', margin: '18px 0 6px', display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ width: 3, height: 14, background: '#00e5ff', borderRadius: 2, display: 'inline-block', flexShrink: 0 }} />
+        <h2 key={idx} style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', margin: '18px 0 6px', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ width: 3, height: 14, background: 'var(--primary-color)', borderRadius: 2, display: 'inline-block', flexShrink: 0 }} />
           {line.slice(3)}
         </h2>
       );
@@ -109,7 +109,7 @@ const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
     // H3
     if (line.startsWith('### ')) {
       result.push(
-        <h3 key={idx} style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8', margin: '10px 0 4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <h3 key={idx} style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-tertiary)', margin: '10px 0 4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           {line.slice(4)}
         </h3>
       );
@@ -117,7 +117,7 @@ const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
     }
     // HR
     if (line.trim() === '---') {
-      result.push(<hr key={idx} style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.08)', margin: '14px 0' }} />);
+      result.push(<hr key={idx} style={{ border: 'none', borderTop: '1px solid var(--border-color)', margin: '14px 0' }} />);
       return;
     }
     // Table
@@ -127,7 +127,7 @@ const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
       if (cells.every(c => /^[-:]+$/.test(c))) return; // separator
       const isHeader = idx < lines.length - 1 && lines[idx + 1]?.includes('---');
       tableRows.push(
-        <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <tr key={idx} style={{ borderBottom: '1px solid var(--border-color)' }}>
           {cells.map((cell, ci) => {
             const Tag = isHeader ? 'th' : 'td';
             const bold = cell.startsWith('**') && cell.endsWith('**');
@@ -137,9 +137,9 @@ const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
                 padding: '7px 12px',
                 fontSize: 12,
                 fontWeight: isHeader || bold ? 700 : 400,
-                color: isHeader || bold ? '#00e5ff' : '#cbd5e1',
+                color: isHeader || bold ? 'var(--primary-color)' : 'var(--text-secondary)',
                 textAlign: 'right',
-                background: isHeader ? 'rgba(0,229,255,0.06)' : 'transparent',
+                background: isHeader ? 'var(--primary-glow)' : 'transparent',
                 whiteSpace: 'nowrap',
               }}>
                 {renderInline(text)}
@@ -155,8 +155,8 @@ const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
       inList = true;
       const text = line.slice(2);
       listItems.push(
-        <li key={idx} style={{ fontSize: 13, lineHeight: 1.65, margin: '4px 0', color: '#cbd5e1', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-          <span style={{ color: '#00e5ff', marginTop: 2, flexShrink: 0 }}>◆</span>
+        <li key={idx} style={{ fontSize: 13, lineHeight: 1.65, margin: '4px 0', color: 'var(--text-secondary)', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+          <span style={{ color: 'var(--primary-color)', marginTop: 2, flexShrink: 0 }}>◆</span>
           <span>{renderInline(text)}</span>
         </li>
       );
@@ -165,7 +165,7 @@ const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
     // Italic footer
     if (line.startsWith('*') && line.endsWith('*') && !line.startsWith('**')) {
       result.push(
-        <p key={idx} style={{ fontSize: 11, color: '#475569', fontStyle: 'italic', margin: '8px 0 0', textAlign: 'center' }}>
+        <p key={idx} style={{ fontSize: 11, color: 'var(--text-tertiary)', fontStyle: 'italic', margin: '8px 0 0', textAlign: 'center' }}>
           {line.slice(1, -1)}
         </p>
       );
@@ -176,10 +176,10 @@ const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
     if (numMatch) {
       result.push(
         <div key={idx} style={{ display: 'flex', gap: 10, margin: '5px 0', alignItems: 'flex-start' }}>
-          <span style={{ background: 'rgba(0,229,255,0.15)', color: '#00e5ff', borderRadius: 4, width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, flexShrink: 0 }}>
+          <span style={{ background: 'var(--primary-glow)', color: 'var(--primary-color)', borderRadius: 4, width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, flexShrink: 0 }}>
             {numMatch[1]}
           </span>
-          <span style={{ fontSize: 13, lineHeight: 1.65, color: '#cbd5e1', paddingTop: 2 }}>
+          <span style={{ fontSize: 13, lineHeight: 1.65, color: 'var(--text-secondary)', paddingTop: 2 }}>
             {renderInline(numMatch[2])}
           </span>
         </div>
@@ -193,7 +193,7 @@ const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
     }
     // Paragraph
     result.push(
-      <p key={idx} style={{ fontSize: 13, lineHeight: 1.7, margin: '3px 0', color: '#cbd5e1' }}>
+      <p key={idx} style={{ fontSize: 13, lineHeight: 1.7, margin: '3px 0', color: 'var(--text-secondary)' }}>
         {renderInline(line)}
       </p>
     );

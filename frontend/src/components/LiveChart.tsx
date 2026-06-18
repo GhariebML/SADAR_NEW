@@ -1,5 +1,6 @@
 // src/components/LiveChart.tsx
 import React from 'react';
+import CyberTooltip from './CyberTooltip';
 import {
   LineChart,
   Line,
@@ -17,8 +18,6 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import type { Signal } from '../api/apiClient';
-
 type ChartType = 'line' | 'area' | 'bar' | 'pie';
 
 interface LiveChartProps {
@@ -40,22 +39,7 @@ const DEFAULT_COLORS = {
   default: '#00e5ff',
 };
 
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="bg-gray-800 border border-gray-700 rounded-lg p-3 shadow-lg">
-        <p className="text-gray-400 text-xs mb-1">{label}</p>
-        {payload.map((p: any, i: number) => (
-          <p key={i} className="text-sm" style={{ color: p.color }}>
-            {p.name}: {typeof p.value === 'number' ? p.value.toFixed(1) : p.value}
-            {p.name === 'الثقة' && '%'}
-          </p>
-        ))}
-      </div>
-    );
-  }
-  return null;
-};
+
 
 const LiveChart: React.FC<LiveChartProps> = ({
   type,
@@ -81,7 +65,7 @@ const LiveChart: React.FC<LiveChartProps> = ({
             {showGrid && <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" />}
             <XAxis dataKey={xAxisKey} stroke="#9ca3af" />
             <YAxis stroke="#9ca3af" />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<CyberTooltip />} cursor={{ fill: 'transparent' }} isAnimationActive={false} />
             {showLegend && <Legend />}
             <Line
               type="monotone"
@@ -99,7 +83,7 @@ const LiveChart: React.FC<LiveChartProps> = ({
             {showGrid && <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" />}
             <XAxis dataKey={xAxisKey} stroke="#9ca3af" />
             <YAxis stroke="#9ca3af" />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<CyberTooltip />} cursor={{ fill: 'transparent' }} isAnimationActive={false} />
             {showLegend && <Legend />}
             <Area
               type="monotone"
@@ -117,7 +101,7 @@ const LiveChart: React.FC<LiveChartProps> = ({
             {showGrid && <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" />}
             <XAxis dataKey={xAxisKey} stroke="#9ca3af" />
             <YAxis stroke="#9ca3af" />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<CyberTooltip />} cursor={{ fill: 'transparent' }} isAnimationActive={false} />
             {showLegend && <Legend />}
             <Bar dataKey={dataKey} fill={getColorArray()[0]} radius={[4, 4, 0, 0]} />
           </BarChart>
@@ -143,7 +127,7 @@ const LiveChart: React.FC<LiveChartProps> = ({
                 />
               ))}
             </Pie>
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<CyberTooltip />} cursor={{ fill: 'transparent' }} isAnimationActive={false} />
             {showLegend && <Legend />}
           </PieChart>
         );

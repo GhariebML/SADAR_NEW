@@ -51,6 +51,8 @@ export interface Signal {
   inference_time_ms: number;
   model_version: string;
   timestamp: string;
+  lat?: number;
+  lng?: number;
 }
 
 export interface Alert {

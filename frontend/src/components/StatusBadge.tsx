@@ -93,7 +93,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
             height: dotSize,
             borderRadius: '50%',
             background: statusColor,
-            animation: status === 'loading' ? 'pulse 1.5s infinite' : 'none',
+            animation: status === 'loading' ? 'statusPulse 1.5s infinite' : 'none',
             boxShadow: status === 'online' ? `0 0 4px ${statusColor}` : 'none',
           }}
         />
@@ -101,7 +101,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
       <span className="status-badge-text">{getStatusText()}</span>
 
       <style>{`
-        @keyframes pulse {
+        @keyframes statusPulse {
           0%, 100% {
             opacity: 1;
             transform: scale(1);

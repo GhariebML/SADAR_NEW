@@ -142,7 +142,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
           ref={textareaRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyPress}
           placeholder={isOnline ? placeholder : 'المساعد غير متصل...'}
           disabled={isLoading || !isOnline}
           rows={1}

@@ -12,7 +12,9 @@ const NAV_ITEMS = [
   { path: '/alerts',    name: 'التنبيهات',      icon: '⚠️', group: 'analysis' },
   { path: '/analytics', name: 'الإحصائيات',    icon: '📊', group: 'analysis' },
   { path: '/agent',     name: 'المساعد الذكي',  icon: '🤖', group: 'analysis' },
+  { path: '/missions',  name: 'المهام',          icon: '🎯', group: 'analysis' },
   { path: '/system',    name: 'مراقبة النظام',  icon: '⚙️', group: 'system' },
+  { path: '/demo-lab',  name: 'مختبر العرض',    icon: '🧪', group: 'system' },
 ];
 
 const GROUP_LABELS: Record<string, string> = {

@@ -47,7 +47,7 @@ export const useAgent = (options: UseAgentOptions = {}) => {
     async (payload: {
       label: string;
       confidence: number;
-      frequency?: number;
+      frequency_mhz?: number;
       snr_db?: number;
       source?: string;
       location?: string;

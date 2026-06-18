@@ -11,23 +11,38 @@ export interface Alert {
   timestamp: string;
 }
 
+export interface WebSocketMessage {
+  alert_id?: number;
+  signal_id?: number;
+  label?: string;
+  confidence?: number;
+  alert_type?: string;
+  location?: string;
+  timestamp?: string;
+  status?: string;
+}
+
 interface WebSocketContextType {
   alerts: Alert[];
   isConnected: boolean;       // ✅ WebSocket للتنبيهات
   isApiOnline: boolean;       // ✅ API Server status منفصل
+  lastMessage: WebSocketMessage | null; // ✅ آخر رسالة من الـ WebSocket
   sendMessage: (message: string) => void;
   checkApiHealth: () => Promise<void>;
 }
 
 const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined);
 
-const WS_URL  = 'ws://localhost:8000/ws/alerts';
-const API_URL = 'http://localhost:8000/api/v1/health';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const WS_URL  = BASE_URL.replace(/^http/, 'ws') + '/ws/alerts';
+const API_URL = BASE_URL + '/api/v1/health';
+const MAX_RECONNECT_ATTEMPTS = 10;
 
 export const WebSocketProvider = ({ children }: { children: ReactNode }) => {
   const [alerts, setAlerts]         = useState<Alert[]>([]);
   const [isConnected, setIsConnected]   = useState(false);
   const [isApiOnline, setIsApiOnline]   = useState(false);
+  const [lastMessage, setLastMessage]   = useState<WebSocketMessage | null>(null);
 
   const wsRef                   = useRef<WebSocket | null>(null);
   const reconnectTimeoutRef     = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -64,7 +79,8 @@ export const WebSocketProvider = ({ children }: { children: ReactNode }) => {
 
       ws.onmessage = (event) => {
         try {
-          const data = JSON.parse(event.data);
+          const data: WebSocketMessage = JSON.parse(event.data);
+          if (mountedRef.current) setLastMessage(data);
           if (data.alert_id && mountedRef.current) {
             const alert: Alert = {
               id:         data.alert_id,
@@ -87,11 +103,15 @@ export const WebSocketProvider = ({ children }: { children: ReactNode }) => {
         setIsConnected(false);
         wsRef.current = null;
 
-        // Exponential backoff — max 30s
-        if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
-        const delay = Math.min(30000, 1000 * Math.pow(2, reconnectAttempts.current));
-        reconnectAttempts.current++;
-        reconnectTimeoutRef.current = setTimeout(connect, delay);
+        // Exponential backoff — max 30s, limit to MAX_RECONNECT_ATTEMPTS
+        if (reconnectAttempts.current < MAX_RECONNECT_ATTEMPTS) {
+          if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
+          const delay = Math.min(30000, 1000 * Math.pow(2, reconnectAttempts.current));
+          reconnectAttempts.current++;
+          reconnectTimeoutRef.current = setTimeout(connect, delay);
+        } else {
+          console.error('Max WebSocket reconnection attempts reached');
+        }
       };
 
       ws.onerror = () => {
@@ -126,7 +146,7 @@ export const WebSocketProvider = ({ children }: { children: ReactNode }) => {
   }, [connect, checkApiHealth]);
 
   return (
-    <WebSocketContext.Provider value={{ alerts, isConnected, isApiOnline, sendMessage, checkApiHealth }}>
+    <WebSocketContext.Provider value={{ alerts, isConnected, isApiOnline, lastMessage, sendMessage, checkApiHealth }}>
       {children}
     </WebSocketContext.Provider>
   );

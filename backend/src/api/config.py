@@ -18,6 +18,9 @@ class Settings(BaseSettings):
     DEBUG: bool = False
 
     # ── JWT ──────────────────────────────────────────────────────────
+    # ⚠️ WARNING: This is a placeholder secret key. In production, override
+    # via the SECRET_KEY environment variable with a strong random value
+    # (e.g. `python -c "import secrets; print(secrets.token_urlsafe(64))"`).
     SECRET_KEY: str = "CHANGE_THIS_IN_PRODUCTION_USE_STRONG_RANDOM_KEY"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
@@ -42,7 +45,7 @@ class Settings(BaseSettings):
     ALERT_CONFIDENCE_THRESHOLD: float = 0.75
 
     # ── CORS ─────────────────────────────────────────────────────────
-    CORS_ORIGINS: list = ["http://localhost:8501", "http://localhost:3000", "*"]
+    CORS_ORIGINS: list = ["http://localhost:8501", "http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:5173"]
 
     class Config:
         env_file = ".env"

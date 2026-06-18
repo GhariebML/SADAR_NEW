@@ -106,7 +106,7 @@ const System: React.FC = () => {
           { icon: '📡', value: statistics?.total_signals ?? 0,    label: 'إجمالي الإشارات' },
           { icon: '⚠️', value: statistics?.alert_count ?? 0,      label: 'التنبيهات النشطة' },
           { icon: '🎯', value: statistics?.alert_threshold ?? 0,  label: 'حد التنبيهات' },
-          { icon: '🕐', value: '14 يوم 6 ساعات',                  label: 'مدة التشغيل' },
+          { icon: '🕐', value: '—',                                label: 'مدة التشغيل' },
         ].map(({ icon, value, label }) => (
           <div key={label} className="stat-card">
             <div className="stat-icon">{icon}</div>
@@ -239,7 +239,7 @@ const System: React.FC = () => {
               ['إجمالي الإشارات',  statistics?.total_signals ?? 0],
               ['إجمالي التنبيهات', alerts.length],
               ['أحدث إشارة',       signals[0] ? new Date(signals[0].timestamp).toLocaleString('ar-EG') : '—'],
-              ['عدد المحطات',      3],
+              ['عدد المحطات',      1],
             ].map(([label, value]) => (
               <div key={String(label)} className="info-row">
                 <span>{label}</span><span>{value}</span>

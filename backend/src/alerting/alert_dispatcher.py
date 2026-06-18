@@ -10,8 +10,18 @@ import os
 from datetime import datetime
 from dotenv import load_dotenv
 
-from telegram_bot   import send_telegram_alert, test_bot_connection
-from gmail_notifier import send_gmail_alert
+try:
+    from .telegram_bot import send_telegram_alert, test_bot_connection
+except ImportError:
+    logging.getLogger(__name__).warning("telegram_bot module unavailable")
+    async def send_telegram_alert(signal: dict) -> bool: return False
+    async def test_bot_connection() -> bool: return False
+
+try:
+    from .gmail_notifier import send_gmail_alert
+except ImportError:
+    logging.getLogger(__name__).warning("gmail_notifier module unavailable")
+    def send_gmail_alert(signal: dict) -> bool: return False
 
 load_dotenv()
 

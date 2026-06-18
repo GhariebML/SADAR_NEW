@@ -15,7 +15,9 @@ import Analytics from './pages/Analytics';
 import Map       from './pages/Map';
 import Agent     from './pages/Agent';
 import System    from './pages/System';
-// ✅ Reports حُذف — التقارير أصبحت عبر زر 📄 في سجل الإشارات → المساعد الذكي
+import Reports   from './pages/Reports';
+import DemoLab   from './pages/DemoLab';
+import Missions  from './pages/Missions';
 import './index.css';
 
 const App: React.FC = () => {
@@ -55,7 +57,27 @@ const App: React.FC = () => {
                 <Route path="/map"       element={<Map />}       />
                 <Route path="/agent"     element={<Agent />}     />
                 <Route path="/system"    element={<System />}    />
-                {/* ✅ /reports حُذف */}
+                <Route path="/reports"   element={<Reports />}   />
+                <Route path="/demo-lab"  element={<DemoLab />}   />
+                <Route path="/missions"  element={<Missions />}  />
+                <Route path="*" element={
+                  <div style={{
+                    display: 'flex', flexDirection: 'column', alignItems: 'center',
+                    justifyContent: 'center', minHeight: '60vh', gap: '16px',
+                    color: 'var(--text-secondary)', textAlign: 'center',
+                  }}>
+                    <span style={{ fontSize: '64px' }}>404</span>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                      الصفحة غير موجودة
+                    </h2>
+                    <p>الرابط الذي تبحث عنه غير متوفر أو تم نقله.</p>
+                    <a href="/" style={{
+                      marginTop: '12px', padding: '10px 28px', borderRadius: '8px',
+                      background: 'var(--primary-color)', color: '#fff',
+                      textDecoration: 'none', fontWeight: 600,
+                    }}>العودة للرئيسية</a>
+                  </div>
+                } />
               </Routes>
             </div>
           </div>

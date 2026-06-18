@@ -24,6 +24,9 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
       case '/map':       return 'الخريطة';
       case '/agent':     return 'المساعد الذكي';
       case '/system':    return 'مراقبة النظام';
+      case '/reports':   return 'التقارير';
+      case '/missions':  return 'المهام';
+      case '/demo-lab':  return 'مختبر العرض';
       default:           return 'SADAR';
     }
   };

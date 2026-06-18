@@ -38,6 +38,16 @@ const getLabelDetails = (label: string) => {
   };
 };
 
+const colorMap: Record<string, string> = {
+  'text-red-500': '#ef4444',
+  'text-orange-500': '#f97316',
+  'text-yellow-500': '#eab308',
+  'text-green-500': '#22c55e',
+  'text-cyan-500': '#06b6d4',
+  'text-blue-500': '#3b82f6',
+  'text-gray-400': '#9ca3af',
+};
+
 const ThreatCard: React.FC<ThreatCardProps> = ({
   label,
   count,
@@ -48,6 +58,7 @@ const ThreatCard: React.FC<ThreatCardProps> = ({
   const details = getLabelDetails(label);
   const percentage = total ? (count / total) * 100 : 0;
   const displayIcon = customIcon || details.icon;
+  const barColor = colorMap[details.color] ?? '#06b6d4';
 
   return (
     <div
@@ -66,7 +77,7 @@ const ThreatCard: React.FC<ThreatCardProps> = ({
               className="h-full rounded-full transition-all duration-300"
               style={{
                 width: `${percentage}%`,
-                backgroundColor: details.color.replace('text-', ''),
+                backgroundColor: barColor,
               }}
             />
           </div>

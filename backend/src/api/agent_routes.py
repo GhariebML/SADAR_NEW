@@ -164,7 +164,7 @@ def _get_strength(s: dict) -> str:
     val = s.get("strength")
     if val is not None and str(val).strip() not in ("none", "null", ""):
         try:    return f"{float(val):.1f} dBm"
-        except: return str(val)
+        except Exception: return str(val)
     return _get_strength_label(float(s.get("confidence", 0)))
 
 
@@ -184,7 +184,11 @@ def _read_db(limit: int = 100) -> list[dict]:
 
 def _rag_query(question: str, top_k: int = 4) -> str:
     try:
-        from rag import query_rag
+        from rag import query_rag  # noqa: optional module
+    except ImportError:
+        log.debug("RAG module not available — skipping knowledge base query")
+        return ""
+    try:
         results = query_rag(question, top_k=top_k)
         if not results:
             return ""
@@ -419,7 +423,7 @@ def _db_summary(signals: list[dict]) -> str:
         station_cnt[st] = station_cnt.get(st, 0) + 1
         if lb == "Drone" and frq != "?":
             try: drone_freqs.append(float(frq))
-            except: pass
+            except Exception: pass
     lines = [
         f"إجمالي الإشارات: {len(signals)}",
         "حسب النوع: " + " | ".join(f"{k}={v}" for k, v in label_cnt.items()),
@@ -444,7 +448,7 @@ def _db_recent(signals: list[dict], n: int = 10,
         def freq_match(s):
             f = _get_freq(s)
             try:    return abs(float(f) - freq_filter) < 60
-            except: return False
+            except Exception: return False
         filtered = [s for s in filtered if freq_match(s)]
     if not filtered:
         return "لا توجد إشارات مطابقة."
@@ -586,11 +590,11 @@ def _build_ai_report(payload, signals: list[dict], freq_info: dict) -> str:
         n = _get_snr(s)
         c = s.get("confidence", 0)
         try: similar_freqs.append(float(f))
-        except: pass
+        except Exception: pass
         try: similar_snrs.append(float(n))
-        except: pass
+        except Exception: pass
         try: similar_confs.append(float(c) * 100)
-        except: pass
+        except Exception: pass
 
     freq_stats = ""
     if similar_freqs:

@@ -15,6 +15,7 @@ import {
 import { useStore } from '../store/useStore';
 import useWebSocket from '../hooks/useWebSocket';
 import StatusBadge from '../components/StatusBadge';
+import CyberTooltip from '../components/CyberTooltip';
 
 const COLORS = {
   Drone: 'var(--drone-color, #e5484d)',
@@ -26,24 +27,6 @@ const COLORS = {
 const getLabelColor = (label: string) =>
   COLORS[label as keyof typeof COLORS] || COLORS.default;
 
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="chart-tooltip-cyber">
-        <p className="tooltip-time">{label}</p>
-        <p className="tooltip-conf">
-          نسبة الثقة: {payload[0].value.toFixed(1)}%
-        </p>
-        {payload[0].payload.label && (
-          <p className="tooltip-label" style={{ color: getLabelColor(payload[0].payload.label) }}>
-            {payload[0].payload.label === 'Drone' ? '🚁 Drone' : payload[0].payload.label === 'Jamming' ? '📡 Jamming' : '✅ Normal'}
-          </p>
-        )}
-      </div>
-    );
-  }
-  return null;
-};
 
 const Realtime: React.FC = () => {
   const { signals, fetchSignals, isLoading } = useStore();
@@ -209,7 +192,7 @@ const Realtime: React.FC = () => {
                 domain={[0, 100]}
                 tickFormatter={(v) => `${v}%`}
               />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={<CyberTooltip />} cursor={{ fill: 'transparent' }} isAnimationActive={false} />
               <Line
                 type="monotone"
                 dataKey="confidence"
@@ -248,13 +231,7 @@ const Realtime: React.FC = () => {
                       <Cell key={`cell-${index}`} fill={getLabelColor(entry.name)} />
                     ))}
                   </Pie>
-                  <Tooltip
-                    contentStyle={{ background: 'var(--bg-tertiary)', borderColor: 'var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)' }}
-                    formatter={(value: number, name: string) => [
-                      `${value} (${total ? Math.round((value / total) * 100) : 0}%)`,
-                      name,
-                    ]}
-                  />
+                  <Tooltip content={<CyberTooltip />} cursor={{ fill: 'transparent' }} isAnimationActive={false} />
                 </PieChart>
               </ResponsiveContainer>
               <div className="donut-center-label">

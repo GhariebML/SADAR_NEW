@@ -6,6 +6,7 @@ import {
 import { useStore } from '../store/useStore';
 import { useWebSocket } from '../context/WebSocketContext';
 import StatusBadge from '../components/StatusBadge';
+import CyberTooltip from '../components/CyberTooltip';
 import { getAgentHealth, getHealth } from '../api/apiClient';
 
 interface HealthState {
@@ -86,6 +87,7 @@ const Home: React.FC = () => {
     }, 30_000);
 
     return () => { clearInterval(interval); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const total   = statistics?.total_signals              ?? 0;
@@ -153,8 +155,9 @@ const Home: React.FC = () => {
                   {labelDist.map((e, i) => <Cell key={i} fill={getLabelColor(e.name)} />)}
                 </Pie>
                 <Tooltip 
-                  contentStyle={{ background: 'var(--bg-tertiary)', borderColor: 'var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)' }}
-                  formatter={(v: any) => [`${v} إشارة`, 'العدد']} 
+                  content={<CyberTooltip suffix=" إشارة" />}
+                  cursor={{ fill: 'transparent' }}
+                  isAnimationActive={false}
                 />
                 <Legend iconType="circle" formatter={(value) => <span style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>{value}</span>} />
               </PieChart>
@@ -180,8 +183,9 @@ const Home: React.FC = () => {
                 <XAxis dataKey="name" tick={{ fill: 'var(--text-secondary)', fontSize: 12, fontWeight: 600 }} />
                 <YAxis tick={{ fill: 'var(--text-secondary)', fontSize: 12, fontWeight: 600 }} />
                 <Tooltip 
-                  contentStyle={{ background: 'var(--bg-tertiary)', borderColor: 'var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)' }}
-                  formatter={(v: any) => [`${v} إشارة`, 'العدد']} 
+                  content={<CyberTooltip suffix=" إشارة" />}
+                  cursor={{ fill: 'var(--border-color)', opacity: 0.2 }}
+                  isAnimationActive={false}
                 />
                 <Bar dataKey="value" radius={[8, 8, 0, 0]} maxBarSize={50}>
                   {labelDist.map((e, i) => <Cell key={i} fill={getLabelColor(e.name)} />)}

@@ -8,7 +8,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src/database"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "database"))
 from fastapi import APIRouter
 try:
     from src.api.routes import router

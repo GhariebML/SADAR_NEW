@@ -6,6 +6,7 @@ import {
   AreaChart, Area,
 } from 'recharts';
 import { useStore } from '../store/useStore';
+import CyberTooltip from '../components/CyberTooltip';
 
 // ── الألوان ──────────────────────────────────────────────────────────────────
 const SIG_COLORS: Record<string, string> = {
@@ -15,33 +16,6 @@ const SIG_COLORS: Record<string, string> = {
 };
 const getColor = (label: string) => SIG_COLORS[label] ?? '#378ADD';
 
-// ── Tooltip ──────────────────────────────────────────────────────────────────
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (!active || !payload?.length) return null;
-  return (
-    <div style={{
-      background: 'var(--tt-bg)',
-      border: '1px solid var(--tt-border)',
-      borderRadius: 10,
-      padding: '10px 16px',
-      fontSize: 12,
-      minWidth: 140,
-    }}>
-      <p style={{ fontWeight: 700, marginBottom: 6, color: 'var(--tt-title)', fontSize: 13 }}>{label}</p>
-      {payload.map((p: any, i: number) => (
-        <div key={i} style={{
-          display: 'flex', justifyContent: 'space-between', gap: 16,
-          color: p.color ?? 'var(--tt-text)', margin: '3px 0',
-        }}>
-          <span style={{ opacity: 0.85 }}>{p.name}</span>
-          <span style={{ fontWeight: 700 }}>
-            {typeof p.value === 'number' ? p.value.toFixed(1) : p.value}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-};
 
 // ── بطاقة إحصاء ──────────────────────────────────────────────────────────────
 interface StatCardProps {
@@ -566,7 +540,7 @@ const Analytics: React.FC = () => {
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" vertical={false} />
                 <XAxis dataKey="name" stroke="var(--text-secondary)" tick={{ fill: 'var(--text-secondary)', fontSize: 13 }} tickLine={false} axisLine={false} />
                 <YAxis stroke="var(--text-secondary)" tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} tickLine={false} axisLine={false} />
-                <Tooltip content={<CustomTooltip />} />
+                <Tooltip content={<CyberTooltip />} cursor={{ fill: 'transparent' }} isAnimationActive={false} />
                 <Bar dataKey="count" name="عدد الإشارات" radius={[8, 8, 0, 0]}>
                   {labelDistribution.map((e, i) => <Cell key={i} fill={e.color} />)}
                 </Bar>
@@ -592,7 +566,7 @@ const Analytics: React.FC = () => {
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" vertical={false} />
                   <XAxis dataKey="time" stroke="var(--text-secondary)" tick={{ fill: 'var(--text-secondary)', fontSize: 11 }} tickLine={false} axisLine={false} />
                   <YAxis stroke="var(--text-secondary)" domain={[0, 100]} tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} tickLine={false} axisLine={false} tickFormatter={v => `${v}%`} />
-                  <Tooltip content={<CustomTooltip />} />
+                  <Tooltip content={<CyberTooltip />} cursor={{ fill: 'transparent' }} isAnimationActive={false} />
                   {Object.keys(SIG_COLORS).map(label => (
                     <Line
                       key={label}
@@ -633,7 +607,7 @@ const Analytics: React.FC = () => {
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" vertical={false} />
                   <XAxis dataKey="range" stroke="var(--text-secondary)" tick={{ fill: 'var(--text-secondary)', fontSize: 11 }} tickLine={false} axisLine={false} />
                   <YAxis stroke="var(--text-secondary)" tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} tickLine={false} axisLine={false} />
-                  <Tooltip content={<CustomTooltip />} />
+                  <Tooltip content={<CyberTooltip />} cursor={{ fill: 'transparent' }} isAnimationActive={false} />
                   <Area type="monotone" dataKey="count" name="عدد الإشارات"
                     stroke="var(--primary-color)" fill="url(#freqGrad)" strokeWidth={2.5} dot={{ r: 4, fill: 'var(--primary-color)', strokeWidth: 0 }} />
                 </AreaChart>
@@ -649,7 +623,7 @@ const Analytics: React.FC = () => {
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" horizontal={false} />
                   <XAxis type="number" domain={[0, 100]} stroke="var(--text-secondary)" tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} tickLine={false} axisLine={false} tickFormatter={v => `${v}%`} />
                   <YAxis type="category" dataKey="label" stroke="var(--text-secondary)" tick={{ fill: 'var(--text-secondary)', fontSize: 13, fontWeight: 600 }} tickLine={false} axisLine={false} width={75} />
-                  <Tooltip content={<CustomTooltip />} />
+                  <Tooltip content={<CyberTooltip />} cursor={{ fill: 'transparent' }} isAnimationActive={false} />
                   <Bar dataKey="min" name="أدنى ثقة" radius={[4, 0, 0, 4]}>
                     {confidenceByLabel.map((d, i) => <Cell key={i} fill={`${d.color}60`} />)}
                   </Bar>
@@ -695,7 +669,7 @@ const Analytics: React.FC = () => {
                         >
                           {labelDistribution.map((e, i) => <Cell key={i} fill={e.color} />)}
                         </Pie>
-                        <Tooltip content={<CustomTooltip />} />
+                        <Tooltip content={<CyberTooltip />} cursor={{ fill: 'transparent' }} isAnimationActive={false} />
                       </PieChart>
                     </ResponsiveContainer>
                   </div>

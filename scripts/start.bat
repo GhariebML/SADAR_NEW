@@ -3,6 +3,10 @@ title SADAR System - Spectrum Anomaly Detection
 color 0A
 cls
 
+REM Resolve the project root relative to this script's location
+set "SCRIPT_DIR=%~dp0"
+set "PROJECT_ROOT=%SCRIPT_DIR%.."
+
 echo ==========================================
 echo    SADAR System Starting...
 echo    Spectrum Anomaly Detection
@@ -10,13 +14,13 @@ echo ==========================================
 echo.
 
 echo [1/3] Starting Backend (FastAPI :8000)...
-cd /d "C:\SADAR\backend"
+cd /d "%PROJECT_ROOT%\backend"
 start "SADAR Backend" cmd /k "python -m uvicorn src.api.main:app --reload --port 8000"
 timeout /t 5 /nobreak >nul
 echo        Started.
 
 echo [2/3] Starting Frontend (React :5173)...
-cd /d "C:\SADAR\frontend"
+cd /d "%PROJECT_ROOT%\frontend"
 start "SADAR Frontend" cmd /k "npm run dev"
 timeout /t 5 /nobreak >nul
 echo        Started.
