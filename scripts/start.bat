@@ -15,7 +15,7 @@ echo.
 
 echo [1/3] Starting Backend (FastAPI :8000)...
 cd /d "%PROJECT_ROOT%\backend"
-start "SADAR Backend" cmd /k "python -m uvicorn src.api.main:app --reload --port 8000"
+start "SADAR Backend" cmd /k "..\venv\Scripts\python.exe -m uvicorn src.api.main:app --reload --port 8000"
 timeout /t 5 /nobreak >nul
 echo        Started.
 

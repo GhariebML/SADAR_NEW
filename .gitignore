@@ -141,3 +141,13 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Python Virtual Environment and temp cache directories
+venv/
+.venv/
+pip_cache/
+tmp/
+*.pyc
+__pycache__/
+.idea/
+.vscode/
